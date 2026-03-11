@@ -19,7 +19,7 @@ jobs:
           cmake -S . -B build \
             -DCMAKE_SYSTEM_NAME=Windows \
             -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc \
-            -DCMAKE_C_FLAGS="-D_WIN32_WINNT=0x0601 -O2" \
+            -DCMAKE_C_FLAGS="-D_WIN32_WINNT=0x0601 -DGetSystemTimePreciseAsFileTime=GetSystemTimeAsFileTime -O2" \
             -DCMAKE_EXE_LINKER_FLAGS="-static" \
             -DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32
 
