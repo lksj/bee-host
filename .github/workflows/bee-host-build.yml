@@ -1,0 +1,33 @@
+name: Build beectl for Windows 7
+on: [push, workflow_dispatch]
+
+jobs:
+  build-windows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install MinGW and CMake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mingw-w64 cmake
+
+      - name: Configure CMake
+        run: |
+          mkdir build
+          cmake -S . -B build \
+            -DCMAKE_SYSTEM_NAME=Windows \
+            -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc \
+            -DCMAKE_C_FLAGS="-D_WIN32_WINNT=0x0601 -O2" \
+            -DCMAKE_EXE_LINKER_FLAGS="-static" \
+            -DCMAKE_FIND_ROOT_PATH=/usr/x86_64-w64-mingw32
+
+      - name: Build project
+        run: cmake --build build --config Release
+
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: beectl-win7-x64
+          path: build/*.exe
