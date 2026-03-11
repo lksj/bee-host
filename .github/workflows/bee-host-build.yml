@@ -26,6 +26,9 @@ jobs:
       - name: Build project
         run: cmake --build build --config Release
 
+      - name: Build packages
+        run: cd build && cpack -C Release -G NSIS
+
       - name: Upload result
         uses: actions/upload-artifact@v4
         with:
